@@ -1,15 +1,19 @@
-/* import path from 'node:path';
-import fs from 'node:fs';
+import 'dotenv/config';
 
-console.log('File path:', path.join(process.cwd(), 'test.txt'));
-console.log('Parse:', path.parse(process.cwd()));
+import express from 'express';
 
-const mes = 'Hello world';
+const app = express();
+const PORT = process.env.PORT ?? 3000;
 
-console.log(mes);
+app.get('/notes', (req, res) => {
+  res.status(200).json({ message: 'Retrieved all notes' });
+});
 
-console.log(
-  'Read file:',
-  fs.readFileSync(path.join(process.cwd(), 'test.txt')),
-);
- */
+app.get('/notes/:noteId', (req, res) => {
+  const { noteId } = req.params;
+  res.status(200).json({ message: `Retrieved note with ID: ${noteId}` });
+});
+
+app.listen(PORT, () => {
+  console.log(`Server is running on port ${PORT}`);
+});
