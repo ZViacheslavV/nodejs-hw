@@ -1,11 +1,12 @@
 import express from 'express';
 import 'dotenv/config';
 import cors from 'cors';
-import { connectMongoDB } from './db/connectMongoDBOLD';
+
+import { connectMongoDB } from './db/connectMongoDB';
 import { logger } from './middleware/logger';
 import { errorHandler } from './middleware/errorHandler';
+import { notFoundHandler } from './middleware/notFOundHandler';
 import router from './routes/notesRoutes';
-// import { notFoundHandler } from './middleware/notFoundHandlerOLD';
 
 const app = express();
 const PORT = process.env.PORT ?? 3000;
@@ -16,7 +17,7 @@ app.use(cors());
 
 app.use(router); // ! is this right? /notesRouter
 
-// app.use(notFoundHandler);
+app.use(notFoundHandler);
 app.use(errorHandler);
 
 await connectMongoDB();
