@@ -1,67 +1,24 @@
 import express from 'express';
 import 'dotenv/config';
 import cors from 'cors';
-import pino from 'pino-http';
-import { connectMongoDB } from './db/connectMongoeDB';
-import { Note } from './models/note';
+import { connectMongoDB } from './db/connectMongoDB';
+// import { Note } from './models/note';
+import { logger } from './middleware/logger';
+import { notFoundHandler } from './middleware/notFOundHandler';
+import { errorHandler } from './middleware/errorHandler';
+import router from './routes/notesRoutes';
 
 const app = express();
 const PORT = process.env.PORT ?? 3000;
 
+app.use(logger);
 app.use(express.json());
 app.use(cors());
-app.use(
-  pino({
-    level: 'info',
-    transport: {
-      target: 'pino-pretty',
-      options: {
-        colorize: true,
-        translateTime: 'HH:MM:ss',
-        ignore: 'pid,hostname',
-        messageFormat:
-          '{req.method} {req.url} {res.statusCode} - {responseTime}ms',
-        hideObject: true,
-      },
-    },
-  }),
-);
 
-app.get('/notes', async (req, res) => {
-  const notes = await Note.find();
-  res.status(200).json(notes);
-});
+app.use(router); // ! is this right? /notesRouter
 
-app.get('/notes/:noteId', async (req, res) => {
-  const { noteId } = req.params;
-  const note = await Note.findById(noteId);
-  if (!note) {
-    return res.status(404).json({ message: 'Student not found' });
-  }
-
-  res.status(200).json(note);
-});
-
-//Error path fot testing:
-/* app.get('/test-error', (req, res) => {
-  throw new Error('Simulated server error');
-}); */
-
-app.use((req, res) => {
-  res.status(404).json({ message: 'Route not found' });
-});
-
-app.use((err, req, res, next) => {
-  console.error('Error:', err.message);
-
-  const isProd = process.env.NODE_ENV === 'production';
-
-  res.status(500).json({
-    message: isProd
-      ? 'Something went wrong. Please try again later.'
-      : err.message,
-  });
-});
+app.use(notFoundHandler);
+app.use(errorHandler);
 
 await connectMongoDB();
 
