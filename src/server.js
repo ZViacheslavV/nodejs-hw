@@ -2,6 +2,8 @@ import express from 'express';
 import 'dotenv/config';
 import cors from 'cors';
 import pino from 'pino-http';
+import { connectMongoDB } from './db/connectMongoeDB';
+import { Note } from './models/note';
 
 const app = express();
 const PORT = process.env.PORT ?? 3000;
@@ -25,19 +27,25 @@ app.use(
   }),
 );
 
-app.get('/notes', (req, res) => {
-  res.status(200).json({ message: 'Retrieved all notes' });
+app.get('/notes', async (req, res) => {
+  const notes = await Note.find();
+  res.status(200).json(notes);
 });
 
-app.get('/notes/:noteId', (req, res) => {
+app.get('/notes/:noteId', async (req, res) => {
   const { noteId } = req.params;
-  res.status(200).json({ message: `Retrieved note with ID: ${noteId}` });
+  const note = await Note.findById(noteId);
+  if (!note) {
+    return res.status(404).json({ message: 'Student not found' });
+  }
+
+  res.status(200).json(note);
 });
 
 //Error path fot testing:
-app.get('/test-error', (req, res) => {
+/* app.get('/test-error', (req, res) => {
   throw new Error('Simulated server error');
-});
+}); */
 
 app.use((req, res) => {
   res.status(404).json({ message: 'Route not found' });
@@ -54,6 +62,8 @@ app.use((err, req, res, next) => {
       : err.message,
   });
 });
+
+await connectMongoDB();
 
 app.listen(PORT, () => {
   console.log(`Server is running on port ${PORT}`);
