@@ -28,6 +28,7 @@ const notesSchema = new Schema(
   },
   {
     timestamps: true,
+    versionKey: false,
   },
 );
 
