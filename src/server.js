@@ -3,9 +3,9 @@ import 'dotenv/config';
 import cors from 'cors';
 
 import { connectMongoDB } from './db/connectMongoDB.js';
-import { logger } from './middleware/logger.js';
-import { errorHandler } from './middleware/errorHandler.js';
-import { notFoundHandler } from './middleware/notFoundHandler.js';
+import { logger } from './middlewares/logger.js';
+import { errorHandler } from './middlewares/errorHandler.js';
+import { notFoundHandler } from './middlewares/notFoundHandler.js';
 import router from './routes/notesRoutes.js';
 
 const app = express();
