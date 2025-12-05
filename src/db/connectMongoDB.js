@@ -2,7 +2,7 @@ import mongoose from 'mongoose';
 import { Note } from '../models/note.js';
 
 const clientOptions = {
-  serverApi: { version: '1', strict: true, deprecationErrors: true },
+  serverApi: { version: '1', strict: false, deprecationErrors: true },
 };
 
 export const connectMongoDB = async () => {
