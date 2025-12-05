@@ -12,7 +12,7 @@ export const getAllNotes = async (req, res) => {
   if (search) notesQuery.where({ $text: { $search: search } });
 
   //Filter
-  if (tag) notesQuery.where('tag').eq(tag); // ? eq or equals better?
+  if (tag) notesQuery.where('tag').eq(tag);
 
   const [totalNotes, notes] = await Promise.all([
     notesQuery.clone().countDocuments(),
