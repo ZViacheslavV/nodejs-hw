@@ -21,7 +21,7 @@ app.use(cors());
 app.use(router);
 
 app.use(notFoundHandler);
-app.use(errors);
+app.use(errors());
 app.use(errorHandler);
 
 await connectMongoDB();
