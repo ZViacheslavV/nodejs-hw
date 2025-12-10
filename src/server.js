@@ -6,8 +6,9 @@ import { connectMongoDB } from './db/connectMongoDB.js';
 import { logger } from './middleware/logger.js';
 import { errorHandler } from './middleware/errorHandler.js';
 import { notFoundHandler } from './middleware/notFoundHandler.js';
-import router from './routes/notesRoutes.js';
+import routerNotes from './routes/notesRoutes.js';
 import { errors } from 'celebrate';
+import routerAuth from './routes/authRoures.js';
 
 const app = express();
 const PORT = process.env.PORT ?? 3000;
@@ -18,7 +19,8 @@ app.use(
 );
 app.use(cors());
 
-app.use(router);
+app.use(routerAuth);
+app.use(routerNotes);
 
 app.use(notFoundHandler);
 app.use(errors());

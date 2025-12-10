@@ -14,38 +14,38 @@ import {
   updateNoteSchema,
 } from '../validations/notesValidation.js';
 
-const router = Router();
+const routerNotes = Router();
 
 // router.use('/notes/:noteId', celebrate(noteIdSchema));
 
-router.get(
+routerNotes.get(
   '/notes',
   celebrate(getAllNotesSchema, { abortEarly: false }),
   getAllNotes,
 );
 
-router.get(
+routerNotes.get(
   '/notes/:noteId',
   celebrate(noteIdSchema, { abortEarly: false }),
   getNoteById,
 );
 
-router.post(
+routerNotes.post(
   '/notes',
   celebrate(createNoteSchema, { abortEarly: false }),
   createNote,
 );
 
-router.patch(
+routerNotes.patch(
   '/notes/:noteId',
   celebrate(updateNoteSchema, { abortEarly: false }),
   updateNote,
 );
 
-router.delete(
+routerNotes.delete(
   '/notes/:noteId',
   celebrate(noteIdSchema, { abortEarly: false }),
   deleteNote,
 );
 
-export default router;
+export default routerNotes;
