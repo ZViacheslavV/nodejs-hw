@@ -19,7 +19,7 @@ const notesRouter = Router();
 
 // router.use('/notes/:noteId', celebrate(noteIdSchema));
 
-Router.use('/notes', authenticate);
+notesRouter.use('/notes', authenticate);
 
 notesRouter.get(
   '/notes',
