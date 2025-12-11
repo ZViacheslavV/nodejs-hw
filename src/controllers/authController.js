@@ -16,3 +16,18 @@ export const registerUser = async (req, res, next) => {
 
   res.status(201).json({ newUser });
 };
+
+export const loginUser = async (req, res, next) => {
+  const { email, password } = req.body;
+
+  const user = User.findOne({ email });
+
+  if (!user) return next(createHttpError(401, 'Invalid credentials'));
+
+  const isPasswordValid = bcrypt.compare(password, user.password);
+
+  if (!isPasswordValid)
+    return next(createHttpError(401, 'Invalid credentials'));
+
+  res.status(200).json(user);
+};
