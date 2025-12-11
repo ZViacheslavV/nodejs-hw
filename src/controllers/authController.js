@@ -39,3 +39,15 @@ export const loginUser = async (req, res, next) => {
 
   res.status(200).json(user);
 };
+
+export const logoutUser = async (req, res) => {
+  const { sessionId } = req.cookie;
+
+  if (sessionId) await Session.deleteOne({ _id: sessionId });
+
+  res.clearCookie('sessionId');
+  res.clearCookie('accessToken');
+  res.clearCookie('refreshToken');
+
+  res.status(204).send();
+};
