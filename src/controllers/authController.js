@@ -24,10 +24,10 @@ export const registerUser = async (req, res, next) => {
 export const loginUser = async (req, res, next) => {
   const { email, password } = req.body;
 
-  const user = User.findOne({ email });
+  const user = await User.findOne({ email });
   if (!user) return next(createHttpError(401, 'Invalid credentials'));
 
-  const isPasswordValid = bcrypt.compare(password, user.password);
+  const isPasswordValid = await bcrypt.compare(password, user.password);
   if (!isPasswordValid)
     return next(createHttpError(401, 'Invalid credentials'));
 

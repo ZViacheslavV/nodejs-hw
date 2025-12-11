@@ -23,7 +23,7 @@ const userSchema = new Schema(
   },
 );
 
-userSchema.pre('save', function (next) {
+userSchema.pre('validation', function (next) {
   if (!this.username) {
     this.username = this.email;
   }
