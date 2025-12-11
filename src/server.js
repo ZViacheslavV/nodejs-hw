@@ -8,7 +8,8 @@ import { errorHandler } from './middleware/errorHandler.js';
 import { notFoundHandler } from './middleware/notFoundHandler.js';
 import routerNotes from './routes/notesRoutes.js';
 import { errors } from 'celebrate';
-import routerAuth from './routes/authRoures.js';
+import routerAuth from './routes/authRoutes.js';
+import cookieParser from 'cookie-parser';
 
 const app = express();
 const PORT = process.env.PORT ?? 3000;
@@ -18,6 +19,7 @@ app.use(
   express.json({ type: ['application/json', 'application/vnd.api+json'] }),
 );
 app.use(cors());
+app.use(cookieParser());
 
 app.use(routerAuth);
 app.use(routerNotes);
