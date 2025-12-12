@@ -18,7 +18,7 @@ export const registerUser = async (req, res, next) => {
 
   setSessionCookies(res, newSession);
 
-  res.status(201).json({ newUser });
+  res.status(201).json(newUser);
 };
 
 export const loginUser = async (req, res, next) => {
@@ -58,7 +58,7 @@ export const refreshUserSession = async (req, res, next) => {
     refreshToken: req.cookies.refreshToken,
   });
 
-  if (!session) return next(createHttpError(401, 'Session no found'));
+  if (!session) return next(createHttpError(401, 'Session not found'));
 
   const isSessionTokenExpired =
     new Date() > new Date(session.refreshTokenValidUntil);

@@ -23,7 +23,7 @@ const userSchema = new Schema(
   },
 );
 
-userSchema.pre('validation', function (next) {
+userSchema.pre('save', function (next) {
   if (!this.username) {
     this.username = this.email;
   }
@@ -36,4 +36,4 @@ userSchema.methods.toJSON = function () {
   return obj;
 };
 
-export const User = model('user', userSchema);
+export const User = model('User', userSchema);
