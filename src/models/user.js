@@ -23,12 +23,15 @@ const userSchema = new Schema(
   },
 );
 
-userSchema.pre('save', function (next) {
-  if (!this.username) {
-    this.username = this.email;
-  }
-  next();
-});
+userSchema.pre(
+  'save',
+  /* async */ function (next) {
+    if (!this.username) {
+      this.username = this.email;
+    }
+    next();
+  },
+);
 
 userSchema.methods.toJSON = function () {
   const obj = this.toObject();
@@ -36,4 +39,4 @@ userSchema.methods.toJSON = function () {
   return obj;
 };
 
-export const User = model('User', userSchema);
+export const User = model('user', userSchema);
