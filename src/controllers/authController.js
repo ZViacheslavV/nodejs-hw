@@ -88,7 +88,7 @@ export const refreshUserSession = async (req, res, next) => {
 export const requestResetEmail = async (req, res) => {
   const { email } = req.body;
 
-  const user = User.findOne({ email });
+  const user = await User.findOne({ email });
 
   if (!user)
     return res
