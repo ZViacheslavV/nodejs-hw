@@ -93,7 +93,7 @@ export const requestResetEmail = async (req, res) => {
   if (!user)
     return res
       .status(200)
-      .json({ message: 'Password reset email sent successfully' });
+      .json({ message: 'Password reset email sent successfully???' });
 
   const resetToken = jwt.sign(
     { sub: user._id, email },
@@ -130,6 +130,8 @@ export const requestResetEmail = async (req, res) => {
 
 export const resetPassword = async (req, res) => {
   const { token, password } = req.body;
+
+  console.log('Token', token);
 
   let payload;
   try {
