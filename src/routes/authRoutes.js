@@ -26,7 +26,7 @@ authRouter.post(
   celebrate(requestResetEmailSchema),
   requestResetEmail,
 );
-.
+
 //TODO authRouter.post('/auth/reset-password', resetPasswordController);
 
 export default authRouter;
