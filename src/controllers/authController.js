@@ -131,8 +131,6 @@ export const requestResetEmail = async (req, res) => {
 export const resetPassword = async (req, res) => {
   const { token, password } = req.body;
 
-  console.log('Token', token);
-
   let payload;
   try {
     payload = jwt.verify(token, process.env.JWT_SECRET);
@@ -145,7 +143,7 @@ export const resetPassword = async (req, res) => {
   if (!user) throw createHttpError(404, 'User not found');
 
   const hashedPassword = await bcrypt.hash(password, 10);
-  await User.updateOne({ _id: user._id, password: hashedPassword });
+  await User.updateOne({ _id: user._id }, { password: hashedPassword });
 
   await Session.deleteMany({ userId: user._id });
 
