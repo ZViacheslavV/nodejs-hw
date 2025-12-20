@@ -32,6 +32,8 @@ app.use(errorHandler);
 
 await connectMongoDB();
 
+console.log('DEPLOY:', new Date().toISOString());
+
 app.listen(PORT, () => {
   console.log(`✅ Server is running on port ${PORT}`);
 });
