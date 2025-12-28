@@ -1,15 +1,37 @@
-/* import path from 'node:path';
-import fs from 'node:fs';
+import express from 'express';
+import 'dotenv/config';
+import cors from 'cors';
 
-console.log('File path:', path.join(process.cwd(), 'test.txt'));
-console.log('Parse:', path.parse(process.cwd()));
+import { connectMongoDB } from './db/connectMongoDB.js';
+import { logger } from './middleware/logger.js';
+import { errorHandler } from './middleware/errorHandler.js';
+import { notFoundHandler } from './middleware/notFoundHandler.js';
+import notesRouter from './routes/notesRoutes.js';
+import { errors } from 'celebrate';
+import authRouter from './routes/authRoutes.js';
+import cookieParser from 'cookie-parser';
+import userRouter from './routes/userRoutes.js';
 
-const mes = 'Hello world';
+const app = express();
+const PORT = process.env.PORT ?? 3000;
 
-console.log(mes);
-
-console.log(
-  'Read file:',
-  fs.readFileSync(path.join(process.cwd(), 'test.txt')),
+app.use(logger);
+app.use(
+  express.json({ type: ['application/json', 'application/vnd.api+json'] }),
 );
- */
+app.use(cors());
+app.use(cookieParser());
+
+app.use(authRouter);
+app.use(notesRouter);
+app.use(userRouter);
+
+app.use(notFoundHandler);
+app.use(errors());
+app.use(errorHandler);
+
+await connectMongoDB();
+
+app.listen(PORT, () => {
+  console.log(`✅ Server is running on port ${PORT}`);
+});
